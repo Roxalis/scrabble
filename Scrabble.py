@@ -99,15 +99,10 @@ class Hand(TileSet):
 
     def find_words(self, score_dct):
         perm = list(set(self.__find_permutations(self.tiles)))
-        w_dct = {}
-        for w in self.__provide_words():
-            w_dct[w] = 0
-
-        lst = []
-        for p in perm:
-            for k in w_dct.keys():
-                if k == p:
-                    lst += [k]
+        w_lst = [w for w in self.__provide_words()]
+        w_set = set(w_lst)
+        perm_set = set(perm)
+        lst = list(perm_set.intersection(w_set))
 
         dct = {}
         for w in lst:
@@ -116,7 +111,7 @@ class Hand(TileSet):
                 score += score_dct[c]
             dct[w] = score
 
-        score_lst = sorted([(v, k) for k, v in dct.items()], reverse=True)
+        score_lst = sorted([(v, k) for k, v in dct.items()],reverse=True)
         if len(score_lst) != 0:
             self.score += score_lst[0][0]
             self.words += [score_lst[0][1]]
